@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	  <head>
+		      <title>Title</title>
+		          <meta charset="utf-8">
+			      <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+            @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+	          @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+		        body { font-family: 'Droid Serif'; }
+			      h1, h2, h3 {
+				              font-family: 'Yanone Kaffeesatz';
+						              font-weight: normal;
+								            }
+			            .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+       </style>
+       <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+       </script>
+  </head>
+<body>
+<textarea id="source">
+class: center, middle
+# Lambda DCS
+---
+# Agenda
+
+* What is it: Formal language similar to Lambda Calculus
+* Where is it used: Represents logical forms which is the result of semantic parsing
+* LDCS forms can be database queries 
+	* Bridge between NL queries to Freebase
+--- 
+# Examples
+
+* “People born in Seattle” example of Join Operation
+    * PlaceOfBirth.Seattle
+* “Set of scientists born in Seattle” : example of Intersection
+    * $$ Profession.Scientist \cap PlaceOfBirth.Seattle $$
+
+---
+# More Examples 
+
+* "Oregon, Washington and Canadian provinces" : example of Union
+    * $$ Oregon \cup Washington \cup Type.CanadianProvince $$
+* "states not bordering California" : example of negation
+    * $$ Type.USState \cap \lnot Border.California $$ 
+* "number of states" example of Higher order functions
+    * $$ Count(Type.USState) $$
+
+* "largest state by area" :another higher order function, argmax
+    * $$ argmax(Type.USState, Area) $$ 
+
+---
+# Limitations
+
+* LDCS forms are largely tree-structured. 
+* Non-tree structured forms are needed for handling anaphora, for which *mu abstraction* is employed
+* So far, compositional operations are unaries. Higher-order functions such as *argmax* operate on binaries, but use a non-atomic comparison function
+* To construct binaries compositionally, *lambda abstraction* is used, which is distinct from lambda abstraction in lambda calculus.
+
+---
+# Anaphora
+
+* What is Anaphora:
+
+`the use of a word referring back to a word used earlier in a text or conversation, to avoid repetition, for example the pronouns he, she, it, and they and the verb do in I like it and so do they.`
+
+* An example: "those who had a child who influenced them", uses the *mu* abstraction
+
+$$ \mu x.Children.Influenced.x $$
+
+* Using a superlative in compositional comparison  "person who has the most children". 
+* Lambda abstraction uses the *Reverse* operator to construct a binary logical form denoting *pairs* of people.
+
+$$ argmax(Type.Person,\mathbf R [ \lambda x.count( \mathbf R [ Children] .x ])) $$
+
+</textarea>
+<script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
+</script>
+<script>
+      var slideshow = remark.create();
+          </script>
+	    </body>
+</html>
