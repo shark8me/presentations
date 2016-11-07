@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+	  <head>
+      <title>Semantic Parsing</title>
+          <meta charset="utf-8">
+      <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+       body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+              font-family: 'Yanone Kaffeesatz';
+              font-weight: normal;
+           }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+       </style>
+       <script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+		  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  		});
+       </script>
+       <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+       </script>
+  </head>
+<body>
+<textarea id="source">
+class: center, middle
+
+# Approaches to Semantic Parsing 
+---
+# What is Semantic Parsing
+
+* A process which takes as input an utterance (sentence), and returns a logical form
+* Where is it used: Question Answering over a knowledge base
+* What is a logical form:
+    * A formal language representation of the parsed utterance.
+
+* This presentation discusses some of the building blocks in the area of semantic parsing.
+
+---
+
+# Machine learning and compositional semantics.
+
+* The paper [Bringing machine learning and compositional semantics together](http://web.stanford.edu/~cgpotts/manuscripts/liang-potts-semantics.pdf)'s section 1 and 2 discuss the relationship between linguistic objects
+    * an utterance (e.g. "two plus three")
+    * a semantic representation (e.g "(+ 2 3)")
+    * a denotation (e.g. "5").
+* These are represented as a 3-tuple $ \langle u, s, d \rangle $
+
+* When a logical form is "executed", it produces a denotation (similar to an answer)
+* A logical form can be represented in many ways, some of which are:
+    * lambda calculus (and its variants)
+    * database query language
+    * The rest of the discussion treats logical forms and semantic representations as synonyms.
+
+---
+
+* There is a one to many relationship between utterances and logical forms. That is, there could be multiple logical forms for the same utterance. E.g "all that glitters is not gold"
+* There is a one to one relationship between logical forms and denotations, that is, a logical form has a unique denotation.
+
+---
+
+## Composition and Learning
+
+* The principle of compositionality states that the meaning of a complex phrase is a function of the meaning of their parts and their mode of combination.
+
+* A semantic interpreter for a language should be able to
+    * it has mastered the syntax
+    * the lexical meanings 
+    * the modes of semantic combination
+
+* Multiple learning paths present themselves:
+    * The semantic parsing task where mapping from _utterance_ to _logical forms_
+    * The interpretation task which maps _utterance_ to _denotation_ using a latent semantic representation.
+
+
+---
+
+## Learning utterance to logical forms
+
+* Using a grammar (CFG or CCG), and the dataset available, machine learning is used in the process of
+    * Generating candidate logical forms given an utterance
+    * The number of forms generated grows exponentially with the length of the utterance.
+    * Beam search is used to reduce the search space of logical forms.
+
+---
+
+## Learning utterance to denontation
+
+* Learning utterance to denotation directly is complex task even if the number of lexical entries is restricted.
+* The complexity is both computation and information-theoretic.
+
+---
+
+# Semantic parsing on tables
+
+* The paper [Compositional Semantic parsing on structured tables](https://cs.stanford.edu/~pliang/papers/compositional-acl2015.pdf) explores learning from HTML-like tables
+
+---
+
+* Input data:
+    * A set of HTML tables, calles the WikiQuestions dataset.
+    * The data consists of a set of 3-tuples $ \{(x_i, t_i, y_i)\} $ where 
+    * $ x $ is a question (e.g. "How many events were in Athens, Greece")
+    * $ y $ is an answer "2"
+    * and $ t $ is a table (see Fig 1 on page 1 of the paper).
+
+* Restrictions
+    * Answer should be available in the same table as the question.
+
+---
+
+# Challenges
+
+* The test set tables are not seen by the algorithm.
+* Requires generation of logical forms from new tables with previously unseen entities and relationships
+* Therefore a lexicon based strategy cannot be employed (because new tables have new entities/lexical entries)
+* Exponential growth in the number of logical forms
+
+---
+
+## Approach:
+
+* convert the utterances $ w $ to a knowledge graph
+* a set of candidate logical forms $ \mathbf Z_x $ are generated for each utterance
+* a log-linear model is trained to learn the feature vector $ \phi (x,w,z) $ for the conditional distribution  $ P_\theta ( z  | x, w ) $
+* The logical form $ z $ with the highest probability is chosen, and executed on $ w $ to get the denotation.
+
+### Parsing:
+
+* modified form of CKY chart parsing called "floating parser".
+* a list of deduction rules are used to generate the parse tree-unclear as to how this is done along with CKY POS parsing.
+
+---
+
+### Features
+
+* Hand-crafted features are used as input vectors to the model
+
+### Generation and Pruning
+
+* The rules generate exponentially large set of logical forms. 
+* Beam search and pruning are used to invalid/redundant logical forms.
+
+---
+
+# Inferring Logical Forms From Denotations
+* [This paper](https://arxiv.org/pdf/1606.06900.pdf) by Pasupat, Liang
+
+---
+
+# Problems associated with generation of logical forms
+
+* The number of forms generated grows exponentially
+* in only 50% of examples was the correct logical form in the set of generated logical forms
+* Challenges solved
+    * Computational: dealing with the large number of form.s
+    * reducing the large increase in the number of spurious forms.
+
+---
+
+# References
+
+</textarea>
+<script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
+</script>
+<script>
+      var slideshow = remark.create();
+          </script>
+	    </body>
+</html>
