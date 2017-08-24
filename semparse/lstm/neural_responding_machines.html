@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	  <head>
+		      <title>Title</title>
+		          <meta charset="utf-8">
+    <style>
+    @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+    @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+    @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+    body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+              font-family: 'Yanone Kaffeesatz';
+              font-weight: normal;
+            }
+       .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+       </style>
+       <script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+		  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  		});
+       </script>
+       <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+       </script>
+  </head>
+<body>
+<textarea id="source">
+class: center, middle
+# Neural Responding Machines 
+---
+# Agenda
+
+* NRMs described in the paper[1] are capable of responding to short messages of the kind encountered in Twitter/Weibo. 
+* Each message can have multiple responses.
+--- 
+# Network
+
+* The network has a encoder & decoder component.
+* The encoder converts the input message ,a sequence of $ x = ( x_1 .. x_t ) $ to a high-dimensional hidden representation $ h = h_1 .. h_t $
+* The input to the decoder is called the context input, which consist of
+*    The hidden representation $ h_t $
+*    an *attention* signal at time $ t $, called $ \alpha_t $
+* This attention signal could be fixed, or dynamic. It could be a function of the input X, or the previous output $ y_0,.., y_{t-1} $
+* This generates one of the outputs $ y_t $
+* Both encoder and decoder are RNNs.
+
+---
+
+# Decoder
+
+* The probability of the yth output word is the output of a softmax function which takes
+    * The $ y-1 $ th  output word
+    * the state of the decoder $ s_t $
+    * the context signal
+    * the state of the decoder (which is a function of the previous state and previous content), can be a logistic, LSTM, or GRU unit.
+    
+---
+
+# Encoder
+
+* The encoder also is an RNNs
+* the *context* $ c_t $ from a sentence is chosen usen 3 different ways: local, global & hybrid.
+* 
+
+---
+
+# References
+
+1. [NRM ](https://arxiv.org/pdf/1503.02364.pdf)
+</textarea>
+<script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
+</script>
+<script>
+      var slideshow = remark.create();
+          </script>
+	    </body>
+</html>

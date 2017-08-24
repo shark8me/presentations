@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	  <head>
+		      <title>Title</title>
+		          <meta charset="utf-8">
+			      <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+            @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+	          @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+		        body { font-family: 'Droid Serif'; }
+			      h1, h2, h3 {
+				              font-family: 'Yanone Kaffeesatz';
+						              font-weight: normal;
+								            }
+			            .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+       </style>
+       <script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+		  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  		});
+       </script>
+       <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+       </script>
+  </head>
+<body>
+<textarea id="source">
+class: center, middle
+# The WASP semantic parsing system/SCFG
+---
+# Agenda
+
+* Understand the WASP system and SCFG
+--- 
+# Overview
+
+* A semantic parser is a translatation of Natural Language (NL) to Meaning representation language (MRL)
+* an SCFG rule consists of a LHS, RHS pair. 
+* The RHS is a pair of strings $ \langle \alpha, \beta \rangle $ 
+* Each SCFG rule $ X \to  \langle \alpha, \beta \rangle $ is a combination of a production of the NL semantic grammar, X → α, and a production of the MRL grammar, X → β
+* we call the string α a pattern, and the string β a template.
+* In the derivation process, Each step of a derivation involves the rewriting of a pair of associated non-terminals in both of the NL and MRL streams.
+
+---
+
+# Data
+
+* Assumption: an input sentence _e_, transforms to 2 outputs, a NL interpretation (according to some grammar) and an MR interpretation
+* A single _e_ can have multiple NL, MR interpretation, each of which has varying degrees of correctnes.
+* therefore a mechanism must be devised for discriminating the correct derivation.
+* the WASP semantic parser takes a derivation _d_, and returns its likelihood of being correct given an input sentence _e_.
+---
+
+# Learning tasks
+
+## There are 2 learning tasks
+
+1. Learn the rules of the SCFG (called a lexicon)
+2. a probabilistic model that scores the derivations
+* both tasks requires a training set, where each instance is a pair $ \langle e_i, f_i \rangle $, which is a NL sentence paired with a MR 
+---
+
+# References
+
+1. [WASP](http://www.cs.utexas.edu/~ml/papers/wasp-naacl-06.pdf)
+</textarea>
+<script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
+</script>
+<script>
+      var slideshow = remark.create();
+          </script>
+	    </body>
+</html>
